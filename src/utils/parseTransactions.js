@@ -231,7 +231,8 @@ export function parseTransactions() {
                         status: 'Delivered',
                         isIncoming,
                         icon: getIcon(tx.description),
-                        refNumber: tx.refNumber
+                        refNumber: tx.refNumber,
+                        date: date
                     };
                 });
             
@@ -242,5 +243,45 @@ export function parseTransactions() {
         });
     
     return result;
+}
+
+// Get most recent transactions as a flat list
+export function getRecentTransactions(limit = 5) {
+    const rawTransactions = parseCSV(csvData);
+    
+    // Filter and convert to UI format, then sort by date (newest first)
+    const transactions = rawTransactions
+        .filter(tx => {
+            // Skip foreign exchange fees as separate entries
+            return !tx.description.toLowerCase().includes('foreign exchange transaction fee');
+        })
+        .map(tx => {
+            const isIncoming = tx.amount > 0;
+            const formattedAmount = formatAmount(tx.amount);
+            
+            return {
+                name: tx.description,
+                category: isIncoming ? 'Transfer' : 
+                        tx.description.toLowerCase().includes('subscription') ? 'Subscription' :
+                        tx.description.toLowerCase().includes('rate') ? 'Payment' : 'Transaction',
+                amount: formattedAmount,
+                status: 'Delivered',
+                isIncoming,
+                icon: getIcon(tx.description),
+                refNumber: tx.refNumber,
+                date: tx.date
+            };
+        })
+        .sort((a, b) => {
+            // Sort by date descending (newest first)
+            const [d1, m1, y1] = a.date.split('/').map(Number);
+            const [d2, m2, y2] = b.date.split('/').map(Number);
+            const date1 = new Date(y1, m1 - 1, d1);
+            const date2 = new Date(y2, m2 - 1, d2);
+            return date2 - date1;
+        })
+        .slice(0, limit);
+    
+    return transactions;
 }
 

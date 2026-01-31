@@ -1,7 +1,8 @@
 import React from 'react';
-import { Bell, Plus, RefreshCw, ArrowRightLeft } from 'lucide-react';
+import { Bell, Plus, RefreshCw, ArrowRightLeft, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useBalance } from '../context/BalanceContext';
+import { getRecentTransactions } from '../utils/parseTransactions';
 
 const AccountCard = ({ country, name, currency, balance, flag, isSelected }) => (
     <div className={`p-4 rounded-2xl bg-white border border-transparent shadow-sm flex flex-col justify-between h-[120px]`}>
@@ -38,6 +39,7 @@ const Home = () => {
     const [activeTab, setActiveTab] = React.useState('Accounts');
     const navigate = useNavigate();
     const { balance, addToBalance } = useBalance();
+    const recentTransactions = React.useMemo(() => getRecentTransactions(3), []);
     
     // Format balance: split into whole and decimal parts
     const balanceStr = balance.toFixed(2);
@@ -204,20 +206,37 @@ const Home = () => {
             <div className='mt-8 px-4'>
                 <div className='flex justify-between items-end mb-4'>
                     <h3 className='text-[19px] font-semibold text-[#111827]'>Transactions</h3>
-                    <button className='text-sm text-[#7C3AED] font-semibold'>See all</button>
+                    <button 
+                        onClick={() => navigate('/transactions')}
+                        className='text-sm text-[#7C3AED] font-semibold'
+                    >
+                        See all
+                    </button>
                 </div>
                 {/* Transaction Items */}
                 <div className='bg-white rounded-[20px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-2 border border-[#F3F4F6]'>
-                    <div className='flex gap-4 items-center p-3'>
-                        <div className='w-10 h-10 rounded-full bg-[#F3F4F6] flex items-center justify-center shrink-0'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></svg>
-                        </div>
-                        <div className='flex-1 min-w-0'>
-                            <div className='text-[13px] font-semibold text-[#111827] truncate'>Google One</div>
-                            <div className='text-[11px] text-[#EF4444] font-medium'>Rejected</div>
-                        </div>
-                        <div className='text-sm font-bold text-[#111827]'>-76.99 AED</div>
-                    </div>
+                    {recentTransactions.map((transaction, index) => {
+                        const Icon = transaction.icon;
+                        const isIncoming = transaction.isIncoming;
+                        const amountColor = isIncoming ? 'text-[#10B981]' : 'text-[#111827]';
+                        const iconBg = isIncoming ? 'bg-[#ECFDF5]' : 'bg-[#F3F4F6]';
+                        const iconColor = isIncoming ? '#10B981' : '#6B7280';
+                        
+                        return (
+                            <div key={index} className='flex gap-4 items-center p-3 border-b border-gray-50 last:border-0'>
+                                <div className={`w-10 h-10 rounded-full ${iconBg} flex items-center justify-center shrink-0`}>
+                                    <Icon size={20} color={iconColor} strokeWidth={1.5} />
+                                </div>
+                                <div className='flex-1 min-w-0'>
+                                    <div className='text-[13px] font-semibold text-[#111827] truncate'>{transaction.name}</div>
+                                    <div className='text-[11px] text-gray-500 font-medium'>{transaction.category}</div>
+                                </div>
+                                <div className={`text-sm font-bold ${amountColor}`}>
+                                    {isIncoming ? '+' : '-'}{transaction.amount} AED
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 

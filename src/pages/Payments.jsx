@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScanLine, Plus, ArrowUpRight, ArrowDownLeft, Search } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { getRecentTransactions } from '../utils/parseTransactions';
 
 const TransactionItem = ({ type, name, amount, status, date, isIncoming }) => {
   return (
@@ -52,6 +53,8 @@ const PayeeCircle = ({ name, label, isNew, color = 'bg-gray-100' }) => (
 
 
 const Payments = () => {
+  const recentTransactions = React.useMemo(() => getRecentTransactions(5), []);
+  
   return (
     <div className='bg-[#F8F9FB] min-h-screen pb-24 px-5 pt-14'>
 
@@ -95,11 +98,25 @@ const Payments = () => {
 
         <div className='bg-white rounded-[24px] p-2 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-[#F3F4F6]'>
           <div className='p-2'>
-            <TransactionItem name="From Ronald Prithiv Pandiaraj Pandiaraj" amount="5.00" isIncoming={true} />
-            <TransactionItem name="To Ronald" amount="-25,606.00" />
-            <TransactionItem name="From PANDIARAJ SAMADHAN" amount="25,700.00" status="Instant transfer" isIncoming={true} />
-            <TransactionItem name="From Ronald Prithiv Pandiaraj Pandiaraj" amount="5.00" isIncoming={true} />
-            <TransactionItem name="To Ronald" amount="-25,700.00" />
+            {recentTransactions.map((transaction, index) => {
+              const Icon = transaction.icon;
+              return (
+                <div key={index} className='flex gap-3 items-center py-4 border-b border-gray-50 last:border-0'>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    transaction.isIncoming ? 'bg-[#ECFDF5]' : 'bg-[#F3F4F6]'
+                  }`}>
+                    <Icon size={20} color={transaction.isIncoming ? '#10B981' : '#6B7280'} strokeWidth={1.5} />
+                  </div>
+                  <div className='flex-1 min-w-0'>
+                    <div className='text-[13px] font-semibold text-[#111827] truncate pr-2'>{transaction.name}</div>
+                    <div className='text-[11px] text-gray-500 font-medium'>{transaction.category || 'Transfer'}</div>
+                  </div>
+                  <div className={`text-[13px] font-bold ${transaction.isIncoming ? 'text-[#10B981]' : 'text-[#111827]'}`}>
+                    {transaction.isIncoming ? '+' : ''}{transaction.amount} AED
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
