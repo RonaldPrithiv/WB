@@ -11,7 +11,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}']
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['wb.png', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
         name: 'Wio Business',
         short_name: 'Wio',
