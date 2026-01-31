@@ -27,19 +27,19 @@ const Passcode = () => {
     };
 
     return (
-        <div className='flex flex-col h-screen bg-white p-6 relative'>
+        <div className='flex flex-col h-screen bg-white px-4 py-4 relative overflow-hidden'>
             {/* Top Bar */}
-            <div className='flex justify-start pt-8'>
-                <button className='p-2 -ml-2'>
-                    <ChevronLeft size={32} color='#1F2937' strokeWidth={1.5} />
+            <div className='flex justify-start pt-2 pb-2'>
+                <button className='p-1 -ml-1'>
+                    <ChevronLeft size={24} color='#1F2937' strokeWidth={1.5} />
                 </button>
             </div>
 
-            {/* Content */}
-            <div className='flex-1 flex flex-col items-center mt-16'>
+            {/* Content - Compact layout */}
+            <div className='flex-1 flex flex-col items-center justify-center min-h-0'>
                 {/* Logo - Custom SVG for the Flower/Sun shape */}
-                <div className='mb-8 text-[#7C3AED]'>
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <div className='mb-4 text-[#7C3AED]'>
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="12" cy="12" r="3" />
                         <path d="M12 5V3" />
                         <path d="M12 21v-2" />
@@ -52,16 +52,16 @@ const Passcode = () => {
                     </svg>
                 </div>
 
-                <h2 className='text-3xl font-semibold mb-12 text-center text-[#111827] leading-tight'>
+                <h2 className='text-xl font-semibold mb-4 text-center text-[#111827] leading-tight'>
                     Enter your passcode<br />to continue
                 </h2>
 
                 {/* Dots */}
-                <div className='flex gap-5 mb-20'>
+                <div className='flex gap-4 mb-6'>
                     {[0, 1, 2, 3].map((i) => (
                         <div
                             key={i}
-                            className={`w-3.5 h-3.5 rounded-full transition-colors duration-200 ${i < code.length
+                            className={`w-3 h-3 rounded-full transition-colors duration-200 ${i < code.length
                                     ? 'bg-[#7C3AED]'
                                     : 'bg-[#E5E7EB]'
                                 }`}
@@ -70,12 +70,12 @@ const Passcode = () => {
                 </div>
 
                 {/* Keypad */}
-                <div className='w-full max-w-[280px] grid grid-cols-3 gap-y-6 gap-x-12 place-items-center'>
+                <div className='w-full max-w-[280px] grid grid-cols-3 gap-y-4 gap-x-8 place-items-center mb-4'>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
                         <button
                             key={num}
                             onClick={() => handleNumClick(num)}
-                            className='text-[28px] font-normal text-[#1F2937] focus:bg-gray-50 rounded-full w-20 h-20 flex items-center justify-center transition-colors'
+                            className='text-2xl font-normal text-[#1F2937] focus:bg-gray-50 rounded-full w-16 h-16 flex items-center justify-center transition-colors active:bg-gray-100'
                         >
                             {num}
                         </button>
@@ -85,25 +85,25 @@ const Passcode = () => {
                     {/* Zero */}
                     <button
                         onClick={() => handleNumClick(0)}
-                        className='text-[28px] font-normal text-[#1F2937] focus:bg-gray-50 rounded-full w-20 h-20 flex items-center justify-center transition-colors'
+                        className='text-2xl font-normal text-[#1F2937] focus:bg-gray-50 rounded-full w-16 h-16 flex items-center justify-center transition-colors active:bg-gray-100'
                     >
                         0
                     </button>
                     {/* Delete */}
                     <button
                         onClick={handleDelete}
-                        className='text-[#1F2937] focus:bg-gray-50 rounded-full w-20 h-20 flex items-center justify-center transition-colors'
+                        className='text-[#1F2937] focus:bg-gray-50 rounded-full w-16 h-16 flex items-center justify-center transition-colors active:bg-gray-100'
                     >
-                        <ChevronLeft size={28} />
+                        <ChevronLeft size={24} />
                     </button>
                 </div>
-            </div>
 
-            {/* Forgot Link */}
-            <div className='pb-12 text-center'>
-                <button className='text-sm text-[#6B7280] font-medium hover:text-[#7C3AED] transition-colors'>
-                    Forgot your passcode?
-                </button>
+                {/* Forgot Link */}
+                <div className='mt-2 text-center'>
+                    <button className='text-xs text-[#6B7280] font-medium hover:text-[#7C3AED] transition-colors'>
+                        Forgot your passcode?
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -1,12 +1,12 @@
 import React from 'react';
-import { ChevronLeft, ArrowDownLeft, ArrowUpRight, Calendar, CreditCard, ShoppingBag } from 'lucide-react';
+import { ChevronLeft, CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { parseTransactions } from '../utils/parseTransactions';
 
 const TransactionRow = ({ name, category, amount, status, isIncoming, icon: Icon = CreditCard }) => {
-    const isPositive = isIncoming || status === 'Delivered';
-    const amountColor = isPositive ? 'text-[#10B981]' : 'text-[#111827]';
-    const iconBg = isPositive ? 'bg-[#ECFDF5]' : 'bg-[#F3F4F6]';
-    const iconColor = isPositive ? '#10B981' : '#6B7280';
+    const amountColor = isIncoming ? 'text-[#10B981]' : 'text-[#111827]';
+    const iconBg = isIncoming ? 'bg-[#ECFDF5]' : 'bg-[#F3F4F6]';
+    const iconColor = isIncoming ? '#10B981' : '#6B7280';
     
     return (
         <div className='flex items-center gap-4 py-4 border-b border-gray-50 last:border-0'>
@@ -27,7 +27,7 @@ const TransactionRow = ({ name, category, amount, status, isIncoming, icon: Icon
                 )}
             </div>
             <div className={`text-sm font-bold ${amountColor}`}>
-                {isIncoming ? '+' : ''}{amount} AED
+                {isIncoming ? '+' : '-'}{amount} AED
             </div>
         </div>
     );
@@ -41,30 +41,7 @@ const DateHeader = ({ date }) => (
 
 const Transactions = () => {
     const navigate = useNavigate();
-    
-    const transactions = [
-        {
-            date: "WED, 14 JANUARY",
-            items: [
-                { name: "Google One", category: "Entertainment", amount: "-76.99", status: "Rejected", isIncoming: false, icon: ShoppingBag },
-                { name: "From Ronald Prithiv Pandiaraj", category: "Transfer", amount: "5.00", status: "Delivered", isIncoming: true, icon: ArrowDownLeft },
-                { name: "To Ronald", category: "Transfer", amount: "-25,606.00", status: "Delivered", isIncoming: false, icon: ArrowUpRight },
-            ]
-        },
-        {
-            date: "SUN, 11 JANUARY",
-            items: [
-                { name: "From PANDIARAJ SAMADHAN", category: "Instant transfer", amount: "25,700.00", status: "Delivered", isIncoming: true, icon: ArrowDownLeft },
-            ]
-        },
-        {
-            date: "WED, 7 JANUARY",
-            items: [
-                { name: "From Ronald Prithiv Pandiaraj", category: "Transfer", amount: "5.00", status: "Delivered", isIncoming: true, icon: ArrowDownLeft },
-                { name: "To Ronald", category: "Transfer", amount: "-25,700.00", status: "Delivered", isIncoming: false, icon: ArrowUpRight },
-            ]
-        },
-    ];
+    const transactions = React.useMemo(() => parseTransactions(), []);
     
     return (
         <div className='bg-[#F8F9FB] min-h-screen pb-24'>
