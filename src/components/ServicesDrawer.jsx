@@ -20,71 +20,23 @@ const ServiceItem = ({ icon: Icon, label, color, bgColor, isDark = false, custom
     </div>
 );
 
-const Services = () => {
+const ServicesDrawer = ({ isOpen, onClose }) => {
     return (
-        <div className='bg-[#F8F9FB] min-h-screen pb-24 relative'>
-            {/* Cards section at top */}
-            <div className='pt-16 px-5'>
-                <div className='flex justify-between items-center mb-4'>
-                    <h1 className='text-[28px] font-medium text-[#111827] tracking-tight'>Cards</h1>
-                    <button className='bg-[#111827] text-white pl-4 pr-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-1 shadow-lg'>
-                        Create card <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                    </button>
-                </div>
-
-                <div className='w-full bg-[#0F172A] rounded-[24px] relative overflow-hidden shadow-2xl text-white p-6' style={{ aspectRatio: '1.586' }}>
-                    <div
-                        className='absolute inset-0'
-                        style={{ background: 'linear-gradient(135deg,#1e293b,#020617)' }}
-                    ></div>
-
-                    {/* Wio watermark */}
-                    <div
-                        className='absolute inset-0 flex items-center justify-center pointer-events-none'
-                        style={{ opacity: 0.03 }}
-                    >
-                        <svg viewBox="0 0 200 100" style={{ width: '120%', height: '120%' }}>
-                            <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fontSize="140" fontFamily="sans-serif" fontWeight="bold" fill="white">wio</text>
-                        </svg>
-                    </div>
-
-                    <div className='relative z-10 flex justify-between items-start'>
-                        <div>
-                            <div className='text-[10px] font-bold text-gray-300 tracking-wider uppercase mb-1'>RONALD PRITHIV PANDIARAJ</div>
-                        </div>
-                        <div className='flex flex-col items-end gap-1'>
-                            <div className='bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1'>
-                                Physical
-                            </div>
-                            <div className='flex items-center gap-1 mt-1'>
-                                <span className='font-bold text-white text-xs'></span>
-                                <span className='text-[10px] font-medium text-white'>Pay</span>
-                            </div>
-                            <div className='text-[10px] font-medium text-white'>Debit</div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Content */}
-                    <div className='absolute bottom-6 left-6 right-6 flex justify-between items-end z-10'>
-                        <div className='flex flex-col'>
-                            <div className='text-[10px] text-gray-400 font-medium mb-1'>Physical</div>
-                            <div className='font-mono text-lg tracking-widest flex gap-3 text-white'>
-                                <span className='opacity-60'>••••</span> <span>1354</span>
-                            </div>
-                        </div>
-                        <div className='text-right'>
-                            <div className='text-2xl font-bold italic text-white leading-none mb-0.5'>VISA</div>
-                            <div className='text-[7px] text-white uppercase tracking-widest opacity-80'>Platinum Business</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Bottom sheet Services modal */}
+        <>
+            {/* Overlay */}
             <div
-                className='absolute left-0 right-0 bottom-0 bg-white px-5 pt-8 pb-28'
+                className={`fixed inset-0 bg-black/40 z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                onClick={onClose}
+            />
+
+            {/* Bottom Drawer */}
+            <div
+                className={`fixed left-0 right-0 bottom-0 bg-white z-[60] px-5 pt-8 pb-28 transition-transform duration-300 transform ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
                 style={{ borderTopLeftRadius: 32, borderTopRightRadius: 32 }}
             >
+                {/* Drawer Handle */}
+                <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6 absolute top-3 left-1/2 transform -translate-x-1/2" />
+
                 <h2 className='text-[28px] font-bold text-[#111827] mb-6'>Services</h2>
 
                 <div className='grid grid-cols-4 gap-y-8 gap-x-2 place-items-start'>
@@ -155,8 +107,8 @@ const Services = () => {
                     />
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
-export default Services;
+export default ServicesDrawer;

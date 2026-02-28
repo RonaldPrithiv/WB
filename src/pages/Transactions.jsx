@@ -7,7 +7,7 @@ const TransactionRow = ({ name, category, amount, status, isIncoming, icon: Icon
     const amountColor = isIncoming ? 'text-[#10B981]' : 'text-[#111827]';
     const iconBg = isIncoming ? 'bg-[#ECFDF5]' : 'bg-[#F3F4F6]';
     const iconColor = isIncoming ? '#10B981' : '#6B7280';
-    
+
     return (
         <div className='flex items-center gap-4 py-4 border-b border-gray-50 last:border-0'>
             <div className={`w-10 h-10 rounded-full ${iconBg} flex items-center justify-center shrink-0`}>
@@ -17,11 +17,10 @@ const TransactionRow = ({ name, category, amount, status, isIncoming, icon: Icon
                 <div className='text-[13px] font-semibold text-[#111827] truncate mb-1'>{name}</div>
                 <div className='text-[11px] text-gray-500 font-medium'>{category || 'Transfer'}</div>
                 {status && (
-                    <div className={`text-[11px] mt-0.5 font-medium ${
-                        status === 'Rejected' ? 'text-[#EF4444]' : 
-                        status === 'Delivered' ? 'text-[#10B981]' : 
-                        'text-gray-500'
-                    }`}>
+                    <div className={`text-[11px] mt-0.5 font-medium ${status === 'Rejected' ? 'text-[#EF4444]' :
+                            status === 'Delivered' ? 'text-[#10B981]' :
+                                'text-gray-500'
+                        }`}>
                         {status}
                     </div>
                 )}
@@ -34,7 +33,7 @@ const TransactionRow = ({ name, category, amount, status, isIncoming, icon: Icon
 };
 
 const DateHeader = ({ date }) => (
-    <div className='px-5 py-3 bg-[#F8F9FB] text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100'>
+    <div className='px-5 py-5 bg-[#F8F9FB] text-[12px] font-bold text-gray-500 uppercase tracking-widest border-b border-gray-100'>
         {date}
     </div>
 );
@@ -42,7 +41,7 @@ const DateHeader = ({ date }) => (
 const Transactions = () => {
     const navigate = useNavigate();
     const transactions = React.useMemo(() => parseTransactions(), []);
-    
+
     return (
         <div className='bg-[#F8F9FB] min-h-screen pb-24'>
             {/* Header */}
